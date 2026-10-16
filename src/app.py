@@ -1,7 +1,8 @@
 import io
 import tempfile
 from pathlib import Path
-
+import os
+from huggingface_hub import hf_hub_download
 import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
@@ -21,24 +22,40 @@ CHECKPOINT_PATH = (
     / "model.ckpt"
 )
 
+MODEL_REPO_ID = "mohamadbakar/bottle-patchcore-model"
 
 @st.cache_resource(show_spinner=False)
 def load_predictor():
     from anomalib.engine import Engine
     from anomalib.models import Patchcore
 
-    if not CHECKPOINT_PATH.is_file():
-        raise FileNotFoundError(f"Model checkpoint not found: {CHECKPOINT_PATH}")
+    # Use the local checkpoint if it exists; otherwise download from Hugging Face.
+    checkpoint_path = CHECKPOINT_PATH
+
+    if not checkpoint_path.is_file():
+        token = os.getenv("HF_TOKEN")
+        try:
+            if "HF_TOKEN" in st.secrets:
+                token = st.secrets["HF_TOKEN"]
+        except Exception:
+            pass
+
+        checkpoint_path = Path(
+            hf_hub_download(
+                repo_id=MODEL_REPO_ID,
+                filename="model.ckpt",
+                token=token,
+            )
+        )
 
     config = load_config()
     model = Patchcore.load_from_checkpoint(
-        CHECKPOINT_PATH,
+        checkpoint_path,
         map_location="cpu",
         pre_trained=False,
     )
     engine = Engine(**config["engine"])
     return model, engine
-
 
 def make_anomaly_map_png(anomaly_map: np.ndarray) -> bytes:
     figure, axis = plt.subplots()
