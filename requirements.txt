@@ -1,0 +1,3 @@
+anomalib[cpu]==2.7.0
+PyYAML>=6.0,<7.0
+streamlit>=1.40,<2.0

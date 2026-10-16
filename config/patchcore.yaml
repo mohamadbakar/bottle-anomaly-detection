@@ -1,0 +1,16 @@
+data:
+  root: datasets
+  category: bottle
+  num_workers: 4
+
+model:
+  backbone: wide_resnet50_2
+  layers:
+    - layer2
+    - layer3
+  pre_trained: true
+
+engine:
+  accelerator: cpu
+  devices: 1
+  default_root_dir: results
