@@ -1,35 +1,86 @@
-# Bottle anomaly detection with PatchCore
+# Bottle Anomaly Detection using PatchCore
 
-This project trains and evaluates PatchCore on the MVTec AD `bottle` category.
-The dataset is read from `datasets/bottle`; the scripts do not extract, move,
-or modify dataset files.
+An industrial visual inspection application that detects anomalies in bottle images using deep learning and the PatchCore model.
 
-## Setup
+## Project Overview
 
-Use a Python environment compatible with Anomalib 2.7.0, then install the
-declared dependencies:
+This project uses the **MVTec AD Bottle dataset** to identify potential defects in bottle images. It provides a web interface where users can upload an image and view the model's prediction and anomaly map.
 
-```powershell
-python -m pip install -r requirements.txt
-```
+## Features
 
-## Train
+- Upload bottle images in PNG or JPG format.
+- Detect potential anomalies using PatchCore.
+- Display an anomaly score and predicted label.
+- Visualize the anomaly map.
+- Download the generated anomaly map.
+- Run the application through Streamlit.
 
-Run from the project root:
+## Technologies
 
-```powershell
-python src\train.py
-```
+- Python
+- PyTorch
+- Anomalib
+- PatchCore
+- Streamlit
+- NumPy
+- Matplotlib
+- Pillow
 
-Training outputs are written under `results`.
+## Model Evaluation
 
-## Evaluate
+The trained model was evaluated on the bottle dataset.
 
-Pass the checkpoint produced by training:
+| Metric | Result |
+|---|---:|
+| Image AUROC | 1.0000 |
+| Image F1 Score | 0.9920 |
+| Pixel AUROC | 0.9856 |
+| Pixel F1 Score | 0.7264 |
 
-```powershell
-python src\evaluate.py results\path\to\model.ckpt
-```
+These results reflect the evaluation performed in this project. Performance may vary on new images and real-world data.
 
-The data path, category, PatchCore settings, and engine settings are in
-`config\patchcore.yaml`.
+## How to Run Locally
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/mohamadbakar/bottle-anomaly-detection.git
+   cd bottle-anomaly-detection
+   ```
+
+2. Create and activate a Python virtual environment.
+
+3. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Download or configure access to the trained model checkpoint as described in the project setup.
+
+5. Start the application:
+
+   ```bash
+   streamlit run src/app.py
+   ```
+
+## Model
+
+The trained PatchCore checkpoint is hosted on Hugging Face:
+
+https://huggingface.co/mohamadbakar/bottle-patchcore-model
+
+## Dataset
+
+This project uses the bottle category from the MVTec Anomaly Detection (MVTec AD) dataset.
+
+## Limitations
+
+The anomaly score is a model score, not a probability. Predictions should be validated on representative production images before using the system for industrial quality control.
+
+## Author
+
+Mohamad Bakar
+
+GitHub: https://github.com/mohamadbakar
+
