@@ -1,5 +1,7 @@
 # Bottle Anomaly Detection using PatchCore
 
+🚀 **[Try the Live Demo](https://bottle-anomaly-detection-f75dmcnsey6aepvcpj4qfc.streamlit.app/)**
+
 An industrial visual inspection application that detects anomalies in bottle images using deep learning and the PatchCore model.
 
 ## Project Overview
